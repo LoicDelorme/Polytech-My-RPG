@@ -21,33 +21,17 @@ public abstract class Item
 	private final int weight;
 
 	/**
-	 * If the item is edible.
-	 */
-	private final boolean isEdible;
-
-	/**
-	 * If the item is equipable.
-	 */
-	private final boolean isEquipable;
-
-	/**
 	 * Create an item.
 	 * 
 	 * @param name
 	 *            The name of the item.
 	 * @param weight
 	 *            The weight of the item.
-	 * @param isEdible
-	 *            If the item is edible.
-	 * @param isEquipable
-	 *            If the item is equipable.
 	 */
-	public Item(String name, int weight, boolean isEdible, boolean isEquipable)
+	public Item(String name, int weight)
 	{
 		this.name = name;
 		this.weight = weight;
-		this.isEdible = isEdible;
-		this.isEquipable = isEquipable;
 	}
 
 	/**
@@ -68,26 +52,6 @@ public abstract class Item
 	public int getWeight()
 	{
 		return this.weight;
-	}
-
-	/**
-	 * Get if the item is edible.
-	 * 
-	 * @return True if the item is edible, else False.
-	 */
-	public boolean isEdible()
-	{
-		return this.isEdible;
-	}
-
-	/**
-	 * Get if the item is equipable.
-	 * 
-	 * @return True if the item is equipable, else False.
-	 */
-	public boolean isEquipable()
-	{
-		return this.isEquipable;
 	}
 
 	/**
