@@ -1,4 +1,4 @@
-package fr.polytech.myrpg.characters.items;
+package fr.polytech.myrpg.characters.items.edible;
 
 import fr.polytech.myrpg.characters.Characteristic;
 
@@ -8,7 +8,7 @@ import fr.polytech.myrpg.characters.Characteristic;
  * @author DELORME Loïc
  * @since 1.0.0
  */
-public class Potion extends Item
+public class Potion extends EdibleItem
 {
 	/**
 	 * The additional health.
@@ -27,7 +27,7 @@ public class Potion extends Item
 	 */
 	public Potion(String name, int weight, int additionalHealth)
 	{
-		super(name, weight, true, false);
+		super(name, weight);
 		this.additionalHealth = additionalHealth;
 	}
 
