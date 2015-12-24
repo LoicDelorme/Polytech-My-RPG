@@ -7,7 +7,6 @@ package fr.polytech.myrpg;
  */
 public class Launcher
 {
-
 	/**
 	 * The entry of the application.
 	 * 
