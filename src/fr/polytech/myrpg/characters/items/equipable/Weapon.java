@@ -1,4 +1,4 @@
-package fr.polytech.myrpg.characters.items;
+package fr.polytech.myrpg.characters.items.equipable;
 
 import fr.polytech.myrpg.characters.Characteristic;
 
@@ -8,7 +8,7 @@ import fr.polytech.myrpg.characters.Characteristic;
  * @author DELORME Loïc
  * @since 1.0.0
  */
-public class Weapon extends Item
+public class Weapon extends EquipableItem
 {
 	/**
 	 * The additional strength.
@@ -27,7 +27,7 @@ public class Weapon extends Item
 	 */
 	public Weapon(String name, int weight, int additionalStrength)
 	{
-		super(name, weight, false, true);
+		super(name, weight);
 		this.additionalStrength = additionalStrength;
 	}
 
@@ -43,5 +43,14 @@ public class Weapon extends Item
 		}
 
 		return 0;
+	}
+
+	/**
+	 * @see fr.polytech.myrpg.characters.items.equipable.EquipableItem#getEquipableItemType()
+	 */
+	@Override
+	public EquipableItemType getEquipableItemType()
+	{
+		return EquipableItemType.WEAPON;
 	}
 }
