@@ -1,4 +1,4 @@
-package fr.polytech.myrpg.characters.items;
+package fr.polytech.myrpg.characters.items.edible;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import fr.polytech.myrpg.characters.Characteristic;
  * @author DELORME Loïc
  * @since 1.0.0
  */
-public class Spell extends Item
+public class Spell extends EdibleItem
 {
 	/**
 	 * The list of available effects.
@@ -31,7 +31,7 @@ public class Spell extends Item
 	 */
 	public Spell(String name, int weight, Effect... effects)
 	{
-		super(name, weight, true, false);
+		super(name, weight);
 		this.effects = new ArrayList<Effect>(Arrays.asList(effects));
 	}
 
