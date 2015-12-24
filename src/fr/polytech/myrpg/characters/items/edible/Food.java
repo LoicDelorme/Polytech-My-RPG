@@ -1,4 +1,4 @@
-package fr.polytech.myrpg.characters.items;
+package fr.polytech.myrpg.characters.items.edible;
 
 import fr.polytech.myrpg.characters.Characteristic;
 
@@ -8,7 +8,7 @@ import fr.polytech.myrpg.characters.Characteristic;
  * @author DELORME Loïc
  * @since 1.0.0
  */
-public class Food extends Item
+public class Food extends EdibleItem
 {
 	/**
 	 * The additional dexterity.
@@ -27,7 +27,7 @@ public class Food extends Item
 	 */
 	public Food(String name, int weight, int additionalDexterity)
 	{
-		super(name, weight, true, false);
+		super(name, weight);
 		this.additionalDexterity = additionalDexterity;
 	}
 
