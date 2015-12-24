@@ -1,4 +1,4 @@
-package fr.polytech.myrpg.characters.items;
+package fr.polytech.myrpg.characters.items.edible;
 
 import fr.polytech.myrpg.characters.Characteristic;
 
@@ -24,9 +24,9 @@ public class Effect
 	 * Create an effect.
 	 * 
 	 * @param characteristic
-	 *            The characteristic on which the effect act.
+	 *            The characteristic on which the effect will act.
 	 * @param value
-	 *            The value which affect the characteristic.
+	 *            The value which will affect the characteristic.
 	 */
 	public Effect(Characteristic characteristic, int value)
 	{
