@@ -2,6 +2,8 @@ package fr.polytech.myrpg.characters.specialmove;
 
 import java.security.SecureRandom;
 
+import fr.polytech.myrpg.characters.items.edible.Effect;
+
 /**
  * This class represents a special move implementation.
  *
@@ -26,35 +28,41 @@ public class SpecialMove implements ISpecialMove
 	private final SpecialMoveType specialMoveType;
 
 	/**
+	 * The effect.
+	 */
+	private final Effect effect;
+
+	/**
 	 * Create a special move.
 	 * 
 	 * @param probabilityOfSuccess
 	 *            The probability of success.
 	 * @param specialMoveType
 	 *            The special move type.
+	 * @param effect
+	 *            The effect.
 	 */
-	public SpecialMove(double probabilityOfSuccess, SpecialMoveType specialMoveType)
+	public SpecialMove(double probabilityOfSuccess, SpecialMoveType specialMoveType, Effect effect)
 	{
 		this.secureRandomGenerator = new SecureRandom();
 		this.probabilityOfSuccess = probabilityOfSuccess;
 		this.specialMoveType = specialMoveType;
+		this.effect = effect;
 	}
 
 	/**
-	 * Get the probability of success.
-	 * 
-	 * @return The probability of success.
+	 * @see fr.polytech.myrpg.characters.specialmove.ISpecialMove#getProbabilityOfSuccess()
 	 */
+	@Override
 	public double getProbabilityOfSuccess()
 	{
 		return this.probabilityOfSuccess;
 	}
 
 	/**
-	 * Get the special move type.
-	 * 
-	 * @return The special move type.
+	 * @see fr.polytech.myrpg.characters.specialmove.ISpecialMove#getSpecialMoveType()
 	 */
+	@Override
 	public SpecialMoveType getSpecialMoveType()
 	{
 		return this.specialMoveType;
@@ -66,6 +74,15 @@ public class SpecialMove implements ISpecialMove
 	@Override
 	public boolean canSpecialMoveBeUsed()
 	{
-		return (this.secureRandomGenerator.nextDouble() > this.probabilityOfSuccess);
+		return (this.secureRandomGenerator.nextDouble() < this.probabilityOfSuccess);
+	}
+
+	/**
+	 * @see fr.polytech.myrpg.characters.specialmove.ISpecialMove#getEffect()
+	 */
+	@Override
+	public Effect getEffect()
+	{
+		return this.effect;
 	}
 }

@@ -19,11 +19,6 @@ public enum SpecialMoveType
 	HEAL,
 
 	/**
-	 * The character try to avoid the attack.
-	 */
-	AVOID_ATTACK,
-
-	/**
 	 * The character try to run away.
 	 */
 	RUN_AWAY;
