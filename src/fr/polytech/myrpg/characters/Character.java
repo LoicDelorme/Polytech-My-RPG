@@ -7,8 +7,8 @@ import java.util.Map;
 
 import fr.polytech.myrpg.characters.exceptions.InvalidConstraintsException;
 import fr.polytech.myrpg.characters.exceptions.TooHeavyCharacterException;
-import fr.polytech.myrpg.characters.exceptions.TooHighCharacteristicsValue;
-import fr.polytech.myrpg.characters.exceptions.TooLessSpecialMoves;
+import fr.polytech.myrpg.characters.exceptions.TooHighCharacteristicsValueException;
+import fr.polytech.myrpg.characters.exceptions.TooLessSpecialMovesException;
 import fr.polytech.myrpg.characters.exceptions.TooMuchArmorsException;
 import fr.polytech.myrpg.characters.exceptions.TooMuchWeaponsException;
 import fr.polytech.myrpg.characters.items.Item;
@@ -136,14 +136,14 @@ public abstract class Character
 	 * 
 	 * @param name
 	 *            The name of the character.
-	 * @throws TooHighCharacteristicsValue
+	 * @throws TooHighCharacteristicsValueException
 	 *             If the characteristics value is higher than expected : {@value #MAXIMAL_CHARACTERISTICS_VALUE}.
-	 * @throws TooLessSpecialMoves
+	 * @throws TooLessSpecialMovesException
 	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 * @throws InvalidConstraintsException
 	 *             If constraints are invalid.
 	 */
-	public Character(String name) throws TooHighCharacteristicsValue, TooLessSpecialMoves, InvalidConstraintsException
+	public Character(String name) throws TooHighCharacteristicsValueException, TooLessSpecialMovesException, InvalidConstraintsException
 	{
 		this.name = name;
 
@@ -227,30 +227,30 @@ public abstract class Character
 	/**
 	 * Check the characteristics.
 	 * 
-	 * @throws TooHighCharacteristicsValue
+	 * @throws TooHighCharacteristicsValueException
 	 *             If the characteristics value is higher than expected : {@value #MAXIMAL_CHARACTERISTICS_VALUE}.
 	 */
-	private void checkCharacteristics() throws TooHighCharacteristicsValue
+	private void checkCharacteristics() throws TooHighCharacteristicsValueException
 	{
 		final int characteristicsValue = computeCharacteristicsValue();
 		if (characteristicsValue > MAXIMAL_CHARACTERISTICS_VALUE)
 		{
-			throw new TooHighCharacteristicsValue(String.format("The characteristics value is %d and it is higher than expected : %d", characteristicsValue, MAXIMAL_CHARACTERISTICS_VALUE));
+			throw new TooHighCharacteristicsValueException(String.format("The characteristics value is %d and it is higher than expected : %d", characteristicsValue, MAXIMAL_CHARACTERISTICS_VALUE));
 		}
 	}
 
 	/**
 	 * Check the special moves.
 	 * 
-	 * @throws TooLessSpecialMoves
+	 * @throws TooLessSpecialMovesException
 	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 */
-	private void checkSpecialMoves() throws TooLessSpecialMoves
+	private void checkSpecialMoves() throws TooLessSpecialMovesException
 	{
 		final int specialMovesSize = this.specialMoves.size();
 		if (specialMovesSize < NB_SPECIAL_MOVES_REQUIRED)
 		{
-			throw new TooLessSpecialMoves(String.format("There is only %d special moves on your character and %d are required", specialMovesSize, NB_SPECIAL_MOVES_REQUIRED));
+			throw new TooLessSpecialMovesException(String.format("There is only %d special moves on your character and %d are required", specialMovesSize, NB_SPECIAL_MOVES_REQUIRED));
 		}
 	}
 

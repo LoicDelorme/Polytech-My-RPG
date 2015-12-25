@@ -1,8 +1,8 @@
 package fr.polytech.myrpg.characters;
 
 import fr.polytech.myrpg.characters.exceptions.InvalidConstraintsException;
-import fr.polytech.myrpg.characters.exceptions.TooHighCharacteristicsValue;
-import fr.polytech.myrpg.characters.exceptions.TooLessSpecialMoves;
+import fr.polytech.myrpg.characters.exceptions.TooHighCharacteristicsValueException;
+import fr.polytech.myrpg.characters.exceptions.TooLessSpecialMovesException;
 import fr.polytech.myrpg.characters.items.edible.Effect;
 import fr.polytech.myrpg.characters.specialmove.SpecialMove;
 import fr.polytech.myrpg.characters.specialmove.SpecialMoveType;
@@ -20,14 +20,14 @@ public class Magician extends Character
 	 * 
 	 * @param name
 	 *            The name of the magician.
-	 * @throws TooHighCharacteristicsValue
+	 * @throws TooHighCharacteristicsValueException
 	 *             If the characteristics value is higher than expected : {@value #MAXIMAL_CHARACTERISTICS_VALUE}.
-	 * @throws TooLessSpecialMoves
+	 * @throws TooLessSpecialMovesException
 	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 * @throws InvalidConstraintsException
 	 *             If constraints are invalid.
 	 */
-	public Magician(String name) throws TooHighCharacteristicsValue, TooLessSpecialMoves, InvalidConstraintsException
+	public Magician(String name) throws TooHighCharacteristicsValueException, TooLessSpecialMovesException, InvalidConstraintsException
 	{
 		super(name);
 	}

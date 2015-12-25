@@ -6,7 +6,7 @@ package fr.polytech.myrpg.characters.exceptions;
  * @author DELORME Loïc
  * @since 1.0.0
  */
-public class TooHighCharacteristicsValue extends Exception
+public class TooHighCharacteristicsValueException extends Exception
 {
 	/**
 	 * The serial UID.
@@ -19,7 +19,7 @@ public class TooHighCharacteristicsValue extends Exception
 	 * @param message
 	 *            The message to display.
 	 */
-	public TooHighCharacteristicsValue(String message)
+	public TooHighCharacteristicsValueException(String message)
 	{
 		super(message);
 	}
