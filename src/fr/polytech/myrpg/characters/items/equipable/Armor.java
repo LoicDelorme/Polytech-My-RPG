@@ -37,12 +37,7 @@ public class Armor extends EquipableItem
 	@Override
 	public int getValueByCharacteristic(Characteristic characteristic)
 	{
-		if (characteristic == Characteristic.DEFENSE)
-		{
-			return this.additionalDefense;
-		}
-
-		return 0;
+		return (characteristic == Characteristic.DEFENSE ? this.additionalDefense : 0);
 	}
 
 	/**

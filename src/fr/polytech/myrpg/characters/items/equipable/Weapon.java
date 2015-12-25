@@ -37,12 +37,7 @@ public class Weapon extends EquipableItem
 	@Override
 	public int getValueByCharacteristic(Characteristic characteristic)
 	{
-		if (characteristic == Characteristic.STRENGTH)
-		{
-			return this.additionalStrength;
-		}
-
-		return 0;
+		return (characteristic == Characteristic.STRENGTH ? this.additionalStrength : 0);
 	}
 
 	/**

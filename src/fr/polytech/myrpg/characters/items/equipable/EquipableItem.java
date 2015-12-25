@@ -29,4 +29,22 @@ public abstract class EquipableItem extends Item
 	 * @return The equipable item type.
 	 */
 	public abstract EquipableItemType getEquipableItemType();
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		final StringBuilder stringRepresentation = new StringBuilder();
+		stringRepresentation.append("EquipableItem [name=");
+		stringRepresentation.append(this.getName());
+		stringRepresentation.append(", weight=");
+		stringRepresentation.append(this.getWeight());
+		stringRepresentation.append(", equipableItemType=");
+		stringRepresentation.append(this.getEquipableItemType());
+		stringRepresentation.append("]");
+
+		return stringRepresentation.toString();
+	}
 }
