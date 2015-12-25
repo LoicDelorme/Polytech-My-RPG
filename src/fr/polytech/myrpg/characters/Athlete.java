@@ -37,9 +37,9 @@ public class Athlete extends Character
 	@Override
 	public void initializeCharacteristics()
 	{
-		this.characteristics.put(Characteristic.DEFENSE, 45);
+		this.characteristics.put(Characteristic.DEXTERITY, 45);
+		this.characteristics.put(Characteristic.DEFENSE, 10);
 		this.characteristics.put(Characteristic.STRENGTH, 15);
-		this.characteristics.put(Characteristic.DEXTERITY, 10);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Athlete extends Character
 		final int dexterityValue = this.characteristics.get(Characteristic.DEXTERITY);
 		final int defenseValue = this.characteristics.get(Characteristic.DEFENSE);
 
-		if (!((defenseValue >= (strengthValue + 10)) && ((strengthValue + 10) >= dexterityValue)))
+		if (!((dexterityValue >= (defenseValue + 10)) && ((defenseValue + 10) >= strengthValue)))
 		{
 			throw new InvalidConstraintsException("");
 		}

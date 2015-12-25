@@ -319,7 +319,7 @@ public abstract class Character
 		processFight(opponent, hasOpponentParry, hasOpponentRunAway);
 
 		// Reverse all effects on the opponent after the fight.
-		for (ISpecialMove currentSpecialMoveUsed : potentialSpecialMoves)
+		for (ISpecialMove currentSpecialMoveUsed : specialMovesUsed)
 		{
 			opponent.updateCharacteristic(currentSpecialMoveUsed.getEffect().getCharacteristic(), currentSpecialMoveUsed.getEffect().getValue() * -1);
 		}
