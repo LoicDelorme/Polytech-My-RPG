@@ -23,7 +23,7 @@ public class Warrior extends Character
 	 * @throws TooHighCharacteristicsValue
 	 *             If the characteristics value is higher than expected : {@value #MAXIMAL_CHARACTERISTICS_VALUE}.
 	 * @throws TooLessSpecialMoves
-	 *             If there is less than {@value #SPECIAL_MOVES_REQUIRED} special moves.
+	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 * @throws InvalidConstraintsException
 	 *             If constraints are invalid.
 	 */
@@ -38,8 +38,8 @@ public class Warrior extends Character
 	@Override
 	public void initializeCharacteristics()
 	{
-		this.characteristics.put(Characteristic.STRENGTH, 65);
-		this.characteristics.put(Characteristic.DEXTERITY, 25);
+		this.characteristics.put(Characteristic.STRENGTH, 40);
+		this.characteristics.put(Characteristic.DEXTERITY, 20);
 		this.characteristics.put(Characteristic.DEFENSE, 10);
 	}
 
@@ -49,9 +49,9 @@ public class Warrior extends Character
 	@Override
 	public void initializeSpecialMoves()
 	{
-		this.specialMoves.add(new SpecialMove(0.1, SpecialMoveType.PARRY, new Effect(Characteristic.DEFENSE, Integer.MAX_VALUE)));
-		this.specialMoves.add(new SpecialMove(0.05, SpecialMoveType.HEAL, new Effect(Characteristic.HEALTH, 150)));
-		this.specialMoves.add(new SpecialMove(0.005, SpecialMoveType.HEAL, new Effect(Characteristic.HEALTH, 350)));
+		this.specialMoves.add(new SpecialMove(0.25, SpecialMoveType.PARRY, null));
+		this.specialMoves.add(new SpecialMove(0.08, SpecialMoveType.HEAL, new Effect(Characteristic.HEALTH, 75)));
+		this.specialMoves.add(new SpecialMove(0.005, SpecialMoveType.HEAL, new Effect(Characteristic.HEALTH, 160)));
 	}
 
 	/**

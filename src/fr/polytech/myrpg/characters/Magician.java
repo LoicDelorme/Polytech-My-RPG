@@ -23,7 +23,7 @@ public class Magician extends Character
 	 * @throws TooHighCharacteristicsValue
 	 *             If the characteristics value is higher than expected : {@value #MAXIMAL_CHARACTERISTICS_VALUE}.
 	 * @throws TooLessSpecialMoves
-	 *             If there is less than {@value #SPECIAL_MOVES_REQUIRED} special moves.
+	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 * @throws InvalidConstraintsException
 	 *             If constraints are invalid.
 	 */
@@ -38,9 +38,9 @@ public class Magician extends Character
 	@Override
 	public void initializeCharacteristics()
 	{
-		this.characteristics.put(Characteristic.DEXTERITY, 50);
-		this.characteristics.put(Characteristic.STRENGTH, 40);
-		this.characteristics.put(Characteristic.DEFENSE, 10);
+		this.characteristics.put(Characteristic.DEXTERITY, 35);
+		this.characteristics.put(Characteristic.STRENGTH, 20);
+		this.characteristics.put(Characteristic.DEFENSE, 15);
 	}
 
 	/**
@@ -49,8 +49,8 @@ public class Magician extends Character
 	@Override
 	public void initializeSpecialMoves()
 	{
-		this.specialMoves.add(new SpecialMove(0.025, SpecialMoveType.PARRY, new Effect(Characteristic.DEFENSE, Integer.MAX_VALUE)));
-		this.specialMoves.add(new SpecialMove(0.1, SpecialMoveType.HEAL, new Effect(Characteristic.HEALTH, 40)));
+		this.specialMoves.add(new SpecialMove(0.1, SpecialMoveType.HEAL, new Effect(Characteristic.HEALTH, 35)));
+		this.specialMoves.add(new SpecialMove(0.04, SpecialMoveType.PARRY, null));
 	}
 
 	/**

@@ -29,22 +29,22 @@ public abstract class Character
 	/**
 	 * The number of special moves required.
 	 */
-	public static final int SPECIAL_MOVES_REQUIRED = 2;
+	public static final int NB_SPECIAL_MOVES_REQUIRED = 2;
 
 	/**
 	 * The maximal characteristics value.
 	 */
-	public static final int MAXIMAL_CHARACTERISTICS_VALUE = 100;
+	public static final int MAXIMAL_CHARACTERISTICS_VALUE = 70;
 
 	/**
-	 * The maximal weight that a character can carry.
+	 * The default maximal weight that a character can carry.
 	 */
-	public static final int MAXIMAL_WEIGHT = 150;
+	public static final int DEFAULT_MAXIMAL_WEIGHT = 75;
 
 	/**
-	 * The characteristic value to add.
+	 * The characteristic value to add on level up.
 	 */
-	public static final int CHARACTERIC_VALUE_TO_ADD = 1;
+	public static final int CHARACTERIC_VALUE_TO_ADD_ON_LEVEL_UP = 5;
 
 	/**
 	 * The multiplier coefficient for calculating the next level.
@@ -52,14 +52,14 @@ public abstract class Character
 	public static final int MULTIPLIER_COEFFICIENT_NEXT_LEVEL = 1000;
 
 	/**
-	 * The maximal number of armor.
+	 * The default maximal number of armor.
 	 */
-	public static final int MAXIMAL_NB_ARMOR = 2;
+	public static final int DEFAULT_MAXIMAL_NB_ARMOR = 2;
 
 	/**
-	 * The maximal number of weapon.
+	 * The default maximal number of weapon.
 	 */
-	public static final int MAXIMAL_NB_WEAPON = 1;
+	public static final int DEFAULT_MAXIMAL_NB_WEAPON = 1;
 
 	/**
 	 * The name of the character.
@@ -74,7 +74,7 @@ public abstract class Character
 	/**
 	 * The max health of the character.
 	 */
-	private final int maxHealth;
+	private int maxHealth;
 
 	/**
 	 * The experience level of the character.
@@ -139,34 +139,40 @@ public abstract class Character
 	 * @throws TooHighCharacteristicsValue
 	 *             If the characteristics value is higher than expected : {@value #MAXIMAL_CHARACTERISTICS_VALUE}.
 	 * @throws TooLessSpecialMoves
-	 *             If there is less than {@value #SPECIAL_MOVES_REQUIRED} special moves.
+	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 * @throws InvalidConstraintsException
 	 *             If constraints are invalid.
 	 */
 	public Character(String name) throws TooHighCharacteristicsValue, TooLessSpecialMoves, InvalidConstraintsException
 	{
 		this.name = name;
-		this.characteristics = new HashMap<Characteristic, Integer>();
-		this.specialMoves = new ArrayList<ISpecialMove>();
 
+		this.characteristics = new HashMap<Characteristic, Integer>();
 		initializeCharacteristics();
-		initializeSpecialMoves();
 		checkCharacteristics();
+
+		this.specialMoves = new ArrayList<ISpecialMove>();
+		initializeSpecialMoves();
 		checkSpecialMoves();
-		checkConstraints();
 
 		this.maxHealth = computeMaxHealthValue();
 		this.characteristics.put(Characteristic.HEALTH, this.maxHealth);
+
 		this.experienceLevel = 1;
 		this.currentExperience = 0;
+
 		this.maxWeight = computeMaxWeightValue();
 		this.currentWeight = 0;
+
 		this.inventory = new ArrayList<Item>();
+
 		this.equippedItems = new ArrayList<EquipableItem>();
-		this.maxNbWeapon = MAXIMAL_NB_WEAPON;
+		this.maxNbWeapon = DEFAULT_MAXIMAL_NB_WEAPON;
 		this.currentNbWeapon = 0;
-		this.maxNbArmor = MAXIMAL_NB_ARMOR;
+		this.maxNbArmor = DEFAULT_MAXIMAL_NB_ARMOR;
 		this.currentNbArmor = 0;
+
+		checkConstraints();
 	}
 
 	/**
@@ -186,7 +192,7 @@ public abstract class Character
 	 */
 	private int computeMaxWeightValue()
 	{
-		return MAXIMAL_WEIGHT;
+		return DEFAULT_MAXIMAL_WEIGHT;
 	}
 
 	/**
@@ -199,7 +205,10 @@ public abstract class Character
 		int characteristicsValue = 0;
 		for (Map.Entry<Characteristic, Integer> entry : this.characteristics.entrySet())
 		{
-			characteristicsValue += entry.getValue();
+			if (entry.getKey() != Characteristic.HEALTH)
+			{
+				characteristicsValue += entry.getValue();
+			}
 		}
 
 		return characteristicsValue;
@@ -234,14 +243,14 @@ public abstract class Character
 	 * Check the special moves.
 	 * 
 	 * @throws TooLessSpecialMoves
-	 *             If there is less than {@value #SPECIAL_MOVES_REQUIRED} special moves.
+	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 */
 	private void checkSpecialMoves() throws TooLessSpecialMoves
 	{
 		final int specialMovesSize = this.specialMoves.size();
-		if (specialMovesSize < SPECIAL_MOVES_REQUIRED)
+		if (specialMovesSize < NB_SPECIAL_MOVES_REQUIRED)
 		{
-			throw new TooLessSpecialMoves(String.format("There is only %d special moves on your character and %d are required", specialMovesSize, SPECIAL_MOVES_REQUIRED));
+			throw new TooLessSpecialMoves(String.format("There is only %d special moves on your character and %d are required", specialMovesSize, NB_SPECIAL_MOVES_REQUIRED));
 		}
 	}
 
@@ -260,7 +269,7 @@ public abstract class Character
 	 */
 	public boolean isDead()
 	{
-		return (this.characteristics.get(Characteristic.HEALTH) == 0);
+		return (this.characteristics.get(Characteristic.HEALTH) <= 0);
 	}
 
 	/**
@@ -282,29 +291,32 @@ public abstract class Character
 		}
 
 		// Set up all effects on the opponent before the fight.
+		boolean hasOpponentParry = false;
+		boolean hasOpponentRunAway = false;
 		final List<ISpecialMove> specialMovesUsed = new ArrayList<ISpecialMove>();
 		for (ISpecialMove currentSpecialMoveUsed : potentialSpecialMoves)
 		{
 			if (currentSpecialMoveUsed.getSpecialMoveType() == SpecialMoveType.PARRY)
 			{
-				// TODO NOTIFY HE TAKES NO DAMAGE THANKS TO HIS SKILLS
-				return;
+				hasOpponentParry = true;
+				continue;
 			}
 
 			if (currentSpecialMoveUsed.getSpecialMoveType() == SpecialMoveType.RUN_AWAY)
 			{
-				// TODO NOTIFY HE TAKES DAMAGE FOR HIS COWARDISE
-				return;
+				hasOpponentRunAway = true;
+				continue;
 			}
 
 			if (currentSpecialMoveUsed.getSpecialMoveType() == SpecialMoveType.HEAL)
 			{
 				opponent.updateCharacteristic(currentSpecialMoveUsed.getEffect().getCharacteristic(), currentSpecialMoveUsed.getEffect().getValue());
 				specialMovesUsed.add(currentSpecialMoveUsed);
+				continue;
 			}
 		}
 
-		processFight(opponent);
+		processFight(opponent, hasOpponentParry, hasOpponentRunAway);
 
 		// Reverse all effects on the opponent after the fight.
 		for (ISpecialMove currentSpecialMoveUsed : potentialSpecialMoves)
@@ -318,17 +330,26 @@ public abstract class Character
 	 * 
 	 * @param opponent
 	 *            The opponent.
+	 * @param hasOpponentParry
+	 *            If the opponent has parry.
+	 * @param hasOpponentRunAway
+	 *            If the opponent has run away.
 	 */
-	private void processFight(Character opponent)
+	private void processFight(Character opponent, boolean hasOpponentParry, boolean hasOpponentRunAway)
 	{
+		if (hasOpponentRunAway)
+		{
+			return;
+		}
+
 		final int attackerStrenght = this.computeStrengthValue();
 		final int opponentDefense = opponent.computeDefenseValue();
-		final int damage = attackerStrenght - opponentDefense;
+		final int damage = (hasOpponentParry ? (attackerStrenght - opponentDefense) / 2 : attackerStrenght - opponentDefense);
 
 		if (damage > 0)
 		{
 			opponent.updateCharacteristic(Characteristic.HEALTH, damage * -1);
-			increaseExperience(damage * 2);
+			increaseExperience(damage * 3);
 		}
 	}
 
@@ -339,17 +360,7 @@ public abstract class Character
 	 */
 	private int computeStrengthValue()
 	{
-		int strengthValue = this.characteristics.get(Characteristic.STRENGTH);
-
-		for (EquipableItem currentEquippedItem : this.equippedItems)
-		{
-			if (currentEquippedItem.getEquipableItemType() == EquipableItemType.WEAPON)
-			{
-				strengthValue += currentEquippedItem.getValueByCharacteristic(Characteristic.STRENGTH);
-			}
-		}
-
-		return strengthValue;
+		return computeStrengthOrDefenseValue(Characteristic.STRENGTH, EquipableItemType.WEAPON);
 	}
 
 	/**
@@ -359,17 +370,31 @@ public abstract class Character
 	 */
 	private int computeDefenseValue()
 	{
-		int defenseValue = this.characteristics.get(Characteristic.DEFENSE);
+		return computeStrengthOrDefenseValue(Characteristic.DEFENSE, EquipableItemType.ARMOR);
+	}
+
+	/**
+	 * Compute the strength or the defense value.
+	 * 
+	 * @param characteristic
+	 *            The characteristic.
+	 * @param equipableItemType
+	 *            The equipable item type.
+	 * @return The computed value.
+	 */
+	private int computeStrengthOrDefenseValue(Characteristic characteristic, EquipableItemType equipableItemType)
+	{
+		int computedValue = this.characteristics.get(characteristic);
 
 		for (EquipableItem currentEquippedItem : this.equippedItems)
 		{
-			if (currentEquippedItem.getEquipableItemType() == EquipableItemType.ARMOR)
+			if (currentEquippedItem.getEquipableItemType() == equipableItemType)
 			{
-				defenseValue += currentEquippedItem.getValueByCharacteristic(Characteristic.DEFENSE);
+				computedValue += currentEquippedItem.getValueByCharacteristic(characteristic);
 			}
 		}
 
-		return defenseValue;
+		return computedValue;
 	}
 
 	/**
@@ -409,6 +434,18 @@ public abstract class Character
 	}
 
 	/**
+	 * Drop an item.
+	 * 
+	 * @param item
+	 *            The item to drop.
+	 */
+	public void dropItem(Item item)
+	{
+		this.inventory.remove(item);
+		this.currentWeight -= item.getWeight();
+	}
+
+	/**
 	 * Equip the character with an equipable item.
 	 * 
 	 * @param equipableItem
@@ -428,6 +465,7 @@ public abstract class Character
 		}
 
 		final EquipableItemType equipableItemType = equipableItem.getEquipableItemType();
+
 		if (equipableItemType == EquipableItemType.ARMOR)
 		{
 			if (this.currentNbArmor == this.maxNbArmor)
@@ -453,14 +491,15 @@ public abstract class Character
 	}
 
 	/**
-	 * Unequipped the character with an equipable item.
+	 * Unequip the character with an equipable item.
 	 * 
 	 * @param equipableItem
-	 *            The equipable item to unequipped.
+	 *            The equipable item to unequip.
 	 */
-	public void unequippedWith(EquipableItem equipableItem)
+	public void unequipWith(EquipableItem equipableItem)
 	{
 		final EquipableItemType equipableItemType = equipableItem.getEquipableItemType();
+
 		if (equipableItemType == EquipableItemType.ARMOR)
 		{
 			this.currentNbArmor--;
@@ -476,6 +515,16 @@ public abstract class Character
 	}
 
 	/**
+	 * Check if the character can level up.
+	 * 
+	 * @return True if the character can level up, else False.
+	 */
+	public boolean canLevelUp()
+	{
+		return (this.currentExperience > (this.experienceLevel * MULTIPLIER_COEFFICIENT_NEXT_LEVEL));
+	}
+
+	/**
 	 * Increase the experience.
 	 * 
 	 * @param experienceToAdd
@@ -484,25 +533,23 @@ public abstract class Character
 	private void increaseExperience(int experienceToAdd)
 	{
 		this.currentExperience += experienceToAdd;
-
-		final int nextLevelStage = this.experienceLevel * MULTIPLIER_COEFFICIENT_NEXT_LEVEL;
-		if (this.currentExperience > nextLevelStage)
-		{
-			this.experienceLevel++;
-			this.currentExperience -= nextLevelStage;
-			upgradeCharacteristic(null);// TODO ASK PLAYER
-		}
 	}
 
 	/**
 	 * Upgrade a characteristic.
 	 * 
-	 * @param characteristicToUpgrade
+	 * @param characteristic
 	 *            The characteristic to upgrade.
 	 */
-	private void upgradeCharacteristic(Characteristic characteristicToUpgrade)
+	public void upgradeCharacteristic(Characteristic characteristic)
 	{
-		updateCharacteristic(characteristicToUpgrade, CHARACTERIC_VALUE_TO_ADD);
+		if (canLevelUp())
+		{
+			this.experienceLevel++;
+			this.currentExperience -= this.experienceLevel * MULTIPLIER_COEFFICIENT_NEXT_LEVEL;
+			updateCharacteristic(characteristic, CHARACTERIC_VALUE_TO_ADD_ON_LEVEL_UP);
+			this.maxHealth = computeMaxHealthValue();
+		}
 	}
 
 	/**
@@ -511,24 +558,14 @@ public abstract class Character
 	 * @param characteristic
 	 *            The characteristic to update.
 	 * @param value
-	 *            The value.
+	 *            The value to add or remove.
 	 */
 	private void updateCharacteristic(Characteristic characteristic, int value)
 	{
 		if (characteristic == Characteristic.HEALTH)
 		{
-			int newHealth = this.characteristics.get(characteristic) + value;
-			if (newHealth > this.maxHealth)
-			{
-				newHealth = this.maxHealth;
-			}
-
-			if (newHealth < 0)
-			{
-				newHealth = 0;
-			}
-
-			this.characteristics.put(characteristic, newHealth);
+			final int newHealthValue = this.characteristics.get(characteristic) + value;
+			this.characteristics.put(characteristic, (newHealthValue > this.maxHealth ? this.maxHealth : newHealthValue));
 		}
 		else
 		{
@@ -542,6 +579,35 @@ public abstract class Character
 	@Override
 	public String toString()
 	{
-		return String.format("Character [name=%s, currentHealth=%d, experienceLevel=%d, currentExperience=%d, currentWeight=%d, currentNbWeapon=%d, currentNbArmor=%d]", this.name, this.characteristics.get(Characteristic.HEALTH), this.experienceLevel, this.currentExperience, this.currentWeight, this.currentNbWeapon, this.currentNbArmor);
+		final StringBuilder stringRepresentation = new StringBuilder();
+		stringRepresentation.append("Character [name=");
+		stringRepresentation.append(this.name);
+		stringRepresentation.append(", characteristics=");
+		stringRepresentation.append(this.characteristics);
+		stringRepresentation.append(", currentHealth=");
+		stringRepresentation.append(this.characteristics.get(Characteristic.HEALTH));
+		stringRepresentation.append(", maxHealth=");
+		stringRepresentation.append(this.maxHealth);
+		stringRepresentation.append(", experienceLevel=");
+		stringRepresentation.append(this.experienceLevel);
+		stringRepresentation.append(", currentExperience=");
+		stringRepresentation.append(this.currentExperience);
+		stringRepresentation.append(", maxWeight=");
+		stringRepresentation.append(this.maxWeight);
+		stringRepresentation.append(", currentWeight=");
+		stringRepresentation.append(this.currentWeight);
+		stringRepresentation.append(", inventory=");
+		stringRepresentation.append(this.inventory);
+		stringRepresentation.append(", specialMoves=");
+		stringRepresentation.append(this.specialMoves);
+		stringRepresentation.append(", equippedItems=");
+		stringRepresentation.append(this.equippedItems);
+		stringRepresentation.append(", currentNbWeapon=");
+		stringRepresentation.append(this.currentNbWeapon);
+		stringRepresentation.append(", currentNbArmor=");
+		stringRepresentation.append(this.currentNbArmor);
+		stringRepresentation.append("]");
+
+		return stringRepresentation.toString();
 	}
 }

@@ -3,7 +3,6 @@ package fr.polytech.myrpg.characters;
 import fr.polytech.myrpg.characters.exceptions.InvalidConstraintsException;
 import fr.polytech.myrpg.characters.exceptions.TooHighCharacteristicsValue;
 import fr.polytech.myrpg.characters.exceptions.TooLessSpecialMoves;
-import fr.polytech.myrpg.characters.items.edible.Effect;
 import fr.polytech.myrpg.characters.specialmove.SpecialMove;
 import fr.polytech.myrpg.characters.specialmove.SpecialMoveType;
 
@@ -23,7 +22,7 @@ public class Athlete extends Character
 	 * @throws TooHighCharacteristicsValue
 	 *             If the characteristics value is higher than expected : {@value #MAXIMAL_CHARACTERISTICS_VALUE}.
 	 * @throws TooLessSpecialMoves
-	 *             If there is less than {@value #SPECIAL_MOVES_REQUIRED} special moves.
+	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 * @throws InvalidConstraintsException
 	 *             If constraints are invalid.
 	 */
@@ -38,9 +37,9 @@ public class Athlete extends Character
 	@Override
 	public void initializeCharacteristics()
 	{
-		this.characteristics.put(Characteristic.DEFENSE, 60);
-		this.characteristics.put(Characteristic.DEXTERITY, 30);
-		this.characteristics.put(Characteristic.STRENGTH, 10);
+		this.characteristics.put(Characteristic.DEFENSE, 45);
+		this.characteristics.put(Characteristic.STRENGTH, 15);
+		this.characteristics.put(Characteristic.DEXTERITY, 10);
 	}
 
 	/**
@@ -49,8 +48,8 @@ public class Athlete extends Character
 	@Override
 	public void initializeSpecialMoves()
 	{
-		this.specialMoves.add(new SpecialMove(0.05, SpecialMoveType.RUN_AWAY, new Effect(Characteristic.DEFENSE, Integer.MAX_VALUE)));
-		this.specialMoves.add(new SpecialMove(0.005, SpecialMoveType.PARRY, new Effect(Characteristic.DEFENSE, Integer.MAX_VALUE)));
+		this.specialMoves.add(new SpecialMove(0.05, SpecialMoveType.RUN_AWAY, null));
+		this.specialMoves.add(new SpecialMove(0.005, SpecialMoveType.PARRY, null));
 	}
 
 	/**
@@ -63,7 +62,7 @@ public class Athlete extends Character
 		final int dexterityValue = this.characteristics.get(Characteristic.DEXTERITY);
 		final int defenseValue = this.characteristics.get(Characteristic.DEFENSE);
 
-		if (!((defenseValue >= (dexterityValue + 10)) && ((dexterityValue + 10) >= strengthValue)))
+		if (!((defenseValue >= (strengthValue + 10)) && ((strengthValue + 10) >= dexterityValue)))
 		{
 			throw new InvalidConstraintsException("");
 		}
