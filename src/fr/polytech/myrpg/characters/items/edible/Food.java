@@ -37,11 +37,6 @@ public class Food extends EdibleItem
 	@Override
 	public int getValueByCharacteristic(Characteristic characteristic)
 	{
-		if (characteristic == Characteristic.DEXTERITY)
-		{
-			return this.additionalDexterity;
-		}
-
-		return 0;
+		return (characteristic == Characteristic.DEXTERITY ? this.additionalDexterity : 0);
 	}
 }

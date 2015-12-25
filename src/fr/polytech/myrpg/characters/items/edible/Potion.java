@@ -37,11 +37,6 @@ public class Potion extends EdibleItem
 	@Override
 	public int getValueByCharacteristic(Characteristic characteristic)
 	{
-		if (characteristic == Characteristic.HEALTH)
-		{
-			return this.additionalHealth;
-		}
-
-		return 0;
+		return (characteristic == Characteristic.HEALTH ? this.additionalHealth : 0);
 	}
 }

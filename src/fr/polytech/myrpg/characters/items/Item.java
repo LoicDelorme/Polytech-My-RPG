@@ -62,4 +62,20 @@ public abstract class Item
 	 * @return The corresponding value.
 	 */
 	public abstract int getValueByCharacteristic(Characteristic characteristic);
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		final StringBuilder stringRepresentation = new StringBuilder();
+		stringRepresentation.append("Item [name=");
+		stringRepresentation.append(this.name);
+		stringRepresentation.append(", weight=");
+		stringRepresentation.append(this.weight);
+		stringRepresentation.append("]");
+
+		return stringRepresentation.toString();
+	}
 }

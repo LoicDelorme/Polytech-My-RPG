@@ -53,4 +53,20 @@ public class Effect
 	{
 		return this.value;
 	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		final StringBuilder stringRepresentation = new StringBuilder();
+		stringRepresentation.append("Effect [characteristic=");
+		stringRepresentation.append(this.characteristic);
+		stringRepresentation.append(", value=");
+		stringRepresentation.append(this.value);
+		stringRepresentation.append("]");
+
+		return stringRepresentation.toString();
+	}
 }
