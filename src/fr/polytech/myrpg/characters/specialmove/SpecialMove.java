@@ -85,4 +85,24 @@ public class SpecialMove implements ISpecialMove
 	{
 		return this.effect;
 	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		final StringBuilder stringRepresentation = new StringBuilder();
+		stringRepresentation.append("SpecialMove [secureRandomGenerator=");
+		stringRepresentation.append(this.secureRandomGenerator);
+		stringRepresentation.append(", probabilityOfSuccess=");
+		stringRepresentation.append(this.probabilityOfSuccess);
+		stringRepresentation.append(", specialMoveType=");
+		stringRepresentation.append(this.specialMoveType);
+		stringRepresentation.append(", effect=");
+		stringRepresentation.append(this.effect);
+		stringRepresentation.append("]");
+
+		return stringRepresentation.toString();
+	}
 }

@@ -16,14 +16,14 @@ public interface ISpecialMove
 	 * @return The probability of success.
 	 */
 	public double getProbabilityOfSuccess();
-	
+
 	/**
 	 * Get the special move type.
 	 * 
 	 * @return The special move type.
 	 */
 	public SpecialMoveType getSpecialMoveType();
-	
+
 	/**
 	 * If the special move can be used.
 	 * 
