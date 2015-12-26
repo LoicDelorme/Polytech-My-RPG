@@ -313,7 +313,6 @@ public abstract class Character
 		// Set up all effects on the opponent before the fight.
 		boolean hasOpponentParry = false;
 		boolean hasOpponentRunAway = false;
-		final List<ISpecialMove> specialMovesUsed = new ArrayList<ISpecialMove>();
 		for (ISpecialMove currentSpecialMoveUsed : potentialSpecialMoves)
 		{
 			if (currentSpecialMoveUsed.getSpecialMoveType() == SpecialMoveType.PARRY)
@@ -331,18 +330,11 @@ public abstract class Character
 			if (currentSpecialMoveUsed.getSpecialMoveType() == SpecialMoveType.HEAL)
 			{
 				opponent.updateCharacteristic(currentSpecialMoveUsed.getEffect().getCharacteristic(), currentSpecialMoveUsed.getEffect().getValue());
-				specialMovesUsed.add(currentSpecialMoveUsed);
 				continue;
 			}
 		}
 
 		processFight(opponent, hasOpponentParry, hasOpponentRunAway);
-
-		// Reverse all effects on the opponent after the fight.
-		for (ISpecialMove currentSpecialMoveUsed : specialMovesUsed)
-		{
-			opponent.updateCharacteristic(currentSpecialMoveUsed.getEffect().getCharacteristic(), currentSpecialMoveUsed.getEffect().getValue() * -1);
-		}
 	}
 
 	/**
