@@ -1,5 +1,6 @@
 package fr.polytech.myrpg.game;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,8 +8,12 @@ import java.util.Scanner;
 
 import fr.polytech.myrpg.characters.Character;
 import fr.polytech.myrpg.characters.Characteristic;
+import fr.polytech.myrpg.characters.exceptions.TooHeavyCharacterException;
+import fr.polytech.myrpg.characters.exceptions.TooMuchArmorsException;
+import fr.polytech.myrpg.characters.exceptions.TooMuchWeaponsException;
 import fr.polytech.myrpg.characters.items.Item;
 import fr.polytech.myrpg.characters.items.edible.EdibleItem;
+import fr.polytech.myrpg.characters.items.equipable.EquipableItem;
 import fr.polytech.myrpg.game.players.Player;
 import fr.polytech.myrpg.game.players.Team;
 import me.grea.antoine.utils.Log;
@@ -29,12 +34,17 @@ public class Game implements IGame
 	/**
 	 * The available characteristics to upgrade.
 	 */
-	public static final String[] AVAILABLE_CHARACTERISTICS = new String[] { "Strength", "Dexterity", "Defense" };
+	public static final String[] AVAILABLE_CHARACTERISTICS = new String[] { "STRENGTH", "DEXTERITY", "DEFENSE" };
 
 	/**
 	 * The scanner.
 	 */
 	private static final Scanner SCANNER = new Scanner(System.in);
+
+	/**
+	 * The secure random generator.
+	 */
+	private static final SecureRandom SECURE_RANDOM_GENERATOR = new SecureRandom();
 
 	/**
 	 * The first team.
@@ -86,8 +96,10 @@ public class Game implements IGame
 		}
 
 		Log.i("------------------------------------------------------------------");
-		Log.i("The team " + (this.firstTeam.allPlayersAreDead() ? this.secondTeam.getName() : this.firstTeam.getName()) + "wins!");
-		Log.i("The team " + (this.firstTeam.allPlayersAreDead() ? this.firstTeam.getName() : this.secondTeam.getName()) + "looses!");
+		Log.i("END OF THE GAME");
+		Log.i("------------------------------------------------------------------");
+		Log.i("The team " + (this.firstTeam.allPlayersAreDead() ? this.secondTeam.getName() : this.firstTeam.getName()) + " wins!");
+		Log.i("The team " + (this.firstTeam.allPlayersAreDead() ? this.firstTeam.getName() : this.secondTeam.getName()) + " looses!");
 		Log.i("------------------------------------------------------------------");
 	}
 
@@ -98,10 +110,15 @@ public class Game implements IGame
 	{
 		final Player currentPlayer = (this.isToFirstTeamToPlay ? this.firstTeam.getCurrentPlayer() : this.secondTeam.getCurrentPlayer());
 
+		Log.i("------------------------------------------------------------------");
+		Log.i("NEW ROUND");
+		Log.i("------------------------------------------------------------------");
 		Log.i("Current player: " + currentPlayer.getName());
+
 		switch (displayAndGetPlayerChoice(Arrays.asList(AVAILABLE_CHOICES)))
 		{
 			case 1:
+				tryToPickUpAnItem(currentPlayer);
 				displayAndAttackOpponent(currentPlayer);
 				break;
 			case 2:
@@ -112,12 +129,67 @@ public class Game implements IGame
 				}
 				else
 				{
+					tryToPickUpAnItem(currentPlayer);
 					displayAndAttackOpponent(currentPlayer);
 				}
 				break;
 		}
 
 		this.isToFirstTeamToPlay = !this.isToFirstTeamToPlay;
+	}
+
+	/**
+	 * Try to pickup an item.
+	 * 
+	 * @param currentPlayer
+	 *            The current player.
+	 */
+	private void tryToPickUpAnItem(Player currentPlayer)
+	{
+		if (!this.items.isEmpty())
+		{
+			final double generatedValue = SECURE_RANDOM_GENERATOR.nextDouble();
+			if (generatedValue < 0.25)
+			{
+				final Item droppedItem = this.items.get(SECURE_RANDOM_GENERATOR.nextInt(this.items.size()));
+
+				if (droppedItem instanceof EdibleItem)
+				{
+					try
+					{
+						currentPlayer.getCharacter().pickUp((EdibleItem) droppedItem);
+						Log.i("------------------------------------------------------------------");
+						Log.i("DROPPED ITEM");
+						Log.i("------------------------------------------------------------------");
+						Log.i("Congratulations, you have dropped an edible item and it was stored in your inventory!");
+						Log.i("------------------------------------------------------------------");
+					}
+					catch (TooHeavyCharacterException e)
+					{
+						Log.e(e);
+					}
+				}
+
+				if (droppedItem instanceof EquipableItem)
+				{
+					try
+					{
+						currentPlayer.getCharacter().equipWith((EquipableItem) droppedItem);
+						Log.i("------------------------------------------------------------------");
+						Log.i("DROPPED ITEM");
+						Log.i("------------------------------------------------------------------");
+						Log.i("Congratulations, you have dropped an equipable item and it was equipped on your character before the fight!");
+						Log.i("------------------------------------------------------------------");
+					}
+					catch (TooHeavyCharacterException | TooMuchArmorsException | TooMuchWeaponsException e)
+					{
+						Log.e(e);
+					}
+				}
+
+				this.items.remove(droppedItem);
+			}
+		}
 	}
 
 	/**
@@ -206,19 +278,23 @@ public class Game implements IGame
 		final Character opponentCharacter = opponent.getCharacter();
 
 		Log.i("------------------------------------------------------------------");
+		Log.i(AsciiArtHelper.SWORDS);
+		Log.i("------------------------------------------------------------------");
 		Log.i("Fight between " + attackerCharacter.getName() + " and " + opponentCharacter.getName());
 
-		Log.i(attackerCharacter.getName() + " health before the fight: " + attackerCharacter.getHealth());
-		Log.i(opponentCharacter.getName() + " health before the fight: " + opponentCharacter.getHealth());
+		Log.i(attackerCharacter.getName() + " (health : " + attackerCharacter.getHealth() + ")");
+		Log.i(opponentCharacter.getName() + " (health : " + opponentCharacter.getHealth() + ")");
 
 		attackerCharacter.attack(opponentCharacter);
 
-		Log.i(attackerCharacter.getName() + " health after the fight: " + attackerCharacter.getHealth());
-		Log.i(opponentCharacter.getName() + " health after the fight: " + opponentCharacter.getHealth());
+		Log.i("------------------------------------------------------------------");
+		Log.i(attackerCharacter.getName() + " (health : " + attackerCharacter.getHealth() + ")");
+		Log.i(opponentCharacter.getName() + " (health : " + opponentCharacter.getHealth() + ")");
 
 		if (opponentCharacter.isDead())
 		{
-			Log.i("The opponent character died along the fight");
+			Log.i(AsciiArtHelper.DEATH);
+			Log.i("RIP " + opponentCharacter.getName());
 			opponentTeam.hasDied(opponent);
 		}
 

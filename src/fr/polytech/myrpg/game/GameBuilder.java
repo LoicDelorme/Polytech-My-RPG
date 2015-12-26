@@ -50,8 +50,8 @@ public class GameBuilder implements IGameBuilder
 	 */
 	public GameBuilder()
 	{
-		this.firstTeam = new Team("Team 1");
-		this.secondTeam = new Team("Team 2");
+		this.firstTeam = new Team("God Team");
+		this.secondTeam = new Team("Devil Team");
 		this.items = new ArrayList<Item>();
 	}
 
@@ -63,6 +63,9 @@ public class GameBuilder implements IGameBuilder
 	{
 		try
 		{
+			Log.i("------------------------------------------------------------------");
+			Log.i("RESOURCES INITIALIZATION");
+			Log.i("------------------------------------------------------------------");
 			Log.i("Creating all characters");
 			Magician gandalf = new Magician("Gandalf");
 			Archer legolas = new Archer("Legolas");
@@ -80,8 +83,8 @@ public class GameBuilder implements IGameBuilder
 			Log.i("Characters were created successfully");
 
 			Log.i("Creating the first team");
-			this.firstTeam.addPlayer(new Player("LegolasPlayer", gandalf));
-			this.firstTeam.addPlayer(new Player("GandalfPlayer", legolas));
+			this.firstTeam.addPlayer(new Player("LegolasPlayer", legolas));
+			this.firstTeam.addPlayer(new Player("GandalfPlayer", gandalf));
 			this.firstTeam.addPlayer(new Player("AragornPlayer", aragorn));
 			this.firstTeam.addPlayer(new Player("GimliPlayer", gimli));
 			this.firstTeam.addPlayer(new Player("GollumPlayer", gollum));
@@ -120,6 +123,7 @@ public class GameBuilder implements IGameBuilder
 			this.items.add(new Spell("StrengthBooster", 3, new Effect(Characteristic.STRENGTH, 45)));
 			this.items.add(new Spell("InvicibleSpell", 4, new Effect(Characteristic.DEFENSE, 150), new Effect(Characteristic.STRENGTH, 45)));
 			Log.i("Items in the world were created successfully");
+			Log.i("------------------------------------------------------------------");
 		}
 		catch (TooHighCharacteristicsValueException | TooLessSpecialMovesException | InvalidConstraintsException e)
 		{
