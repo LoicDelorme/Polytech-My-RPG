@@ -99,7 +99,7 @@ public abstract class Character
 	/**
 	 * The inventory of the character.
 	 */
-	private final List<Item> inventory;
+	private final List<EdibleItem> inventory;
 
 	/**
 	 * The special moves of the character.
@@ -164,7 +164,7 @@ public abstract class Character
 		this.maxWeight = computeMaxWeightValue();
 		this.currentWeight = 0;
 
-		this.inventory = new ArrayList<Item>();
+		this.inventory = new ArrayList<EdibleItem>();
 
 		this.equippedItems = new ArrayList<EquipableItem>();
 		this.maxNbWeapon = DEFAULT_MAXIMAL_NB_WEAPON;
@@ -263,13 +263,33 @@ public abstract class Character
 	public abstract void checkConstraints() throws InvalidConstraintsException;
 
 	/**
+	 * Get the health.
+	 * 
+	 * @return The health.
+	 */
+	public int getHealth()
+	{
+		return this.characteristics.get(Characteristic.HEALTH);
+	}
+
+	/**
 	 * Check if the character is dead.
 	 * 
 	 * @return True if he is dead, else False.
 	 */
 	public boolean isDead()
 	{
-		return (this.characteristics.get(Characteristic.HEALTH) <= 0);
+		return (getHealth() <= 0);
+	}
+
+	/**
+	 * Get the name.
+	 * 
+	 * @return The name.
+	 */
+	public String getName()
+	{
+		return this.name;
 	}
 
 	/**
@@ -405,7 +425,7 @@ public abstract class Character
 	 * @throws TooHeavyCharacterException
 	 *             If the character is too heavy.
 	 */
-	public void pickUp(Item item) throws TooHeavyCharacterException
+	public void pickUp(EdibleItem item) throws TooHeavyCharacterException
 	{
 		if (this.currentWeight + item.getWeight() > this.maxWeight)
 		{
@@ -443,6 +463,16 @@ public abstract class Character
 	{
 		this.inventory.remove(item);
 		this.currentWeight -= item.getWeight();
+	}
+
+	/**
+	 * Get the inventory.
+	 * 
+	 * @return The inventory.
+	 */
+	public List<EdibleItem> getInventory()
+	{
+		return this.inventory;
 	}
 
 	/**
