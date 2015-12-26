@@ -1,5 +1,8 @@
 package fr.polytech.myrpg;
 
+import fr.polytech.myrpg.game.GameBuilder;
+import fr.polytech.myrpg.game.IGame;
+
 /**
  * The launcher of the application.
  * 
@@ -15,6 +18,10 @@ public class Launcher
 	 */
 	public static void main(String[] args)
 	{
-		System.out.println("Coming soon...");
+		final IGame buildGame = new GameBuilder().buildGame();
+		if (buildGame != null)
+		{
+			buildGame.startGame();
+		}
 	}
 }
