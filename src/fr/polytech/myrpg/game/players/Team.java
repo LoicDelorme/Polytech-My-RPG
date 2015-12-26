@@ -78,7 +78,7 @@ public class Team
 	public Player getCurrentPlayer()
 	{
 		final Player player = this.players.get(this.currentPlayerOffset);
-		this.currentPlayerOffset = (this.currentPlayerOffset + 1) % (this.players.size() - 1);
+		this.currentPlayerOffset = (this.currentPlayerOffset + 1) % ((this.players.size() - 1) == 0 ? 1 : this.players.size() - 1);
 		return player;
 	}
 
