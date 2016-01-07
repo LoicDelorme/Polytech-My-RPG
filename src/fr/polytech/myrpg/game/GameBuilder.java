@@ -63,10 +63,10 @@ public class GameBuilder implements IGameBuilder
 	{
 		try
 		{
-			Log.i("------------------------------------------------------------------");
-			Log.i("RESOURCES INITIALIZATION");
-			Log.i("------------------------------------------------------------------");
-			Log.i("Creating all characters");
+			Log.d("------------------------------------------------------------------");
+			Log.d("RESOURCES INITIALIZATION");
+			Log.d("------------------------------------------------------------------");
+			Log.d("Creating all characters");
 			Magician gandalf = new Magician("Gandalf");
 			Archer legolas = new Archer("Legolas");
 			Warrior aragorn = new Warrior("Aragorn");
@@ -80,50 +80,50 @@ public class GameBuilder implements IGameBuilder
 			Warrior azog = new Warrior("Azog");
 			Warrior orc = new Warrior("Orc");
 			Magician balrog = new Magician("Balrog");
-			Log.i("Characters were created successfully");
+			Log.d("Characters were created successfully");
 
-			Log.i("Creating the first team");
+			Log.d("Creating the first team");
 			this.firstTeam.addPlayer(new Player("LegolasPlayer", legolas));
 			this.firstTeam.addPlayer(new Player("GandalfPlayer", gandalf));
 			this.firstTeam.addPlayer(new Player("AragornPlayer", aragorn));
 			this.firstTeam.addPlayer(new Player("GimliPlayer", gimli));
 			this.firstTeam.addPlayer(new Player("GollumPlayer", gollum));
 			this.firstTeam.addPlayer(new Player("FrodonPlayer", frodon));
-			Log.i("The first team was created successfully");
+			Log.d("The first team was created successfully");
 
-			Log.i("Creating the second team");
+			Log.d("Creating the second team");
 			this.secondTeam.addPlayer(new Player("SauronPlayer", sauron));
 			this.secondTeam.addPlayer(new Player("NazgulPlayer", nazgul));
 			this.secondTeam.addPlayer(new Player("GothmogPlayer", gothmog));
 			this.secondTeam.addPlayer(new Player("AzogPlayer", azog));
 			this.secondTeam.addPlayer(new Player("OrcPlayer", orc));
 			this.secondTeam.addPlayer(new Player("BalrogPlayer", balrog));
-			Log.i("The second team was created successfully");
+			Log.d("The second team was created successfully");
 
-			Log.i("Creating all items in the world");
-			Log.i("Creating all armors");
+			Log.d("Creating all items in the world");
+			Log.d("Creating all armors");
 			this.items.add(new Armor("IronArmor", 20, 14));
 			this.items.add(new Armor("GoldArmor", 22, 18));
 			this.items.add(new Armor("PlatinumArmor", 25, 28));
-			Log.i("Creating all weapons");
+			Log.d("Creating all weapons");
 			this.items.add(new Weapon("IronSword", 8, 10));
 			this.items.add(new Weapon("PlatinumSword", 14, 10));
 			this.items.add(new Weapon("FlamingPlatinumSword", 18, 25));
-			Log.i("Creating all foods");
+			Log.d("Creating all foods");
 			this.items.add(new Food("Bread", 1, 4));
 			this.items.add(new Food("Raspeberry", 1, 3));
 			this.items.add(new Food("Apple", 1, 5));
-			Log.i("Creating all potions");
+			Log.d("Creating all potions");
 			this.items.add(new Potion("EarlyPotion", 1, 20));
 			this.items.add(new Potion("BasicPotion", 1, 35));
 			this.items.add(new Potion("AdvancedPotion", 2, 50));
 			this.items.add(new Potion("MasterPotion", 3, 100));
-			Log.i("Creating all spells");
+			Log.d("Creating all spells");
 			this.items.add(new Spell("DefenseBooster", 5, new Effect(Characteristic.DEFENSE, 150)));
 			this.items.add(new Spell("StrengthBooster", 3, new Effect(Characteristic.STRENGTH, 45)));
 			this.items.add(new Spell("InvicibleSpell", 4, new Effect(Characteristic.DEFENSE, 150), new Effect(Characteristic.STRENGTH, 45)));
-			Log.i("Items in the world were created successfully");
-			Log.i("------------------------------------------------------------------");
+			Log.d("Items in the world were created successfully");
+			Log.d("------------------------------------------------------------------");
 		}
 		catch (TooHighCharacteristicsValueException | TooFewSpecialMovesException | InvalidConstraintsException e)
 		{
