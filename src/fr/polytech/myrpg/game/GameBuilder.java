@@ -10,7 +10,7 @@ import fr.polytech.myrpg.characters.Magician;
 import fr.polytech.myrpg.characters.Warrior;
 import fr.polytech.myrpg.characters.exceptions.InvalidConstraintsException;
 import fr.polytech.myrpg.characters.exceptions.TooHighCharacteristicsValueException;
-import fr.polytech.myrpg.characters.exceptions.TooLessSpecialMovesException;
+import fr.polytech.myrpg.characters.exceptions.TooFewSpecialMovesException;
 import fr.polytech.myrpg.characters.items.Item;
 import fr.polytech.myrpg.characters.items.edible.Effect;
 import fr.polytech.myrpg.characters.items.edible.Food;
@@ -125,7 +125,7 @@ public class GameBuilder implements IGameBuilder
 			Log.i("Items in the world were created successfully");
 			Log.i("------------------------------------------------------------------");
 		}
-		catch (TooHighCharacteristicsValueException | TooLessSpecialMovesException | InvalidConstraintsException e)
+		catch (TooHighCharacteristicsValueException | TooFewSpecialMovesException | InvalidConstraintsException e)
 		{
 			Log.e(e);
 			return null;

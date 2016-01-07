@@ -9,8 +9,8 @@ import java.util.Scanner;
 import fr.polytech.myrpg.characters.Character;
 import fr.polytech.myrpg.characters.Characteristic;
 import fr.polytech.myrpg.characters.exceptions.TooHeavyCharacterException;
-import fr.polytech.myrpg.characters.exceptions.TooMuchArmorsException;
-import fr.polytech.myrpg.characters.exceptions.TooMuchWeaponsException;
+import fr.polytech.myrpg.characters.exceptions.TooManyArmorsException;
+import fr.polytech.myrpg.characters.exceptions.TooManyWeaponsException;
 import fr.polytech.myrpg.characters.items.Item;
 import fr.polytech.myrpg.characters.items.edible.EdibleItem;
 import fr.polytech.myrpg.characters.items.equipable.EquipableItem;
@@ -181,7 +181,7 @@ public class Game implements IGame
 						Log.i("Congratulations, you have dropped an equipable item and it was equipped on your character before the fight!");
 						Log.i("------------------------------------------------------------------");
 					}
-					catch (TooHeavyCharacterException | TooMuchArmorsException | TooMuchWeaponsException e)
+					catch (TooHeavyCharacterException | TooManyArmorsException | TooManyWeaponsException e)
 					{
 						Log.e(e);
 					}

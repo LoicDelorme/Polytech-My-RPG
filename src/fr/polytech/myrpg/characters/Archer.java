@@ -2,7 +2,7 @@ package fr.polytech.myrpg.characters;
 
 import fr.polytech.myrpg.characters.exceptions.InvalidConstraintsException;
 import fr.polytech.myrpg.characters.exceptions.TooHighCharacteristicsValueException;
-import fr.polytech.myrpg.characters.exceptions.TooLessSpecialMovesException;
+import fr.polytech.myrpg.characters.exceptions.TooFewSpecialMovesException;
 import fr.polytech.myrpg.characters.items.edible.Effect;
 import fr.polytech.myrpg.characters.specialmove.SpecialMove;
 import fr.polytech.myrpg.characters.specialmove.SpecialMoveType;
@@ -22,12 +22,12 @@ public class Archer extends Character
 	 *            The name of the archer.
 	 * @throws TooHighCharacteristicsValueException
 	 *             If the characteristics value is higher than expected : {@value #MAXIMAL_CHARACTERISTICS_VALUE}.
-	 * @throws TooLessSpecialMovesException
+	 * @throws TooFewSpecialMovesException
 	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 * @throws InvalidConstraintsException
 	 *             If constraints are invalid.
 	 */
-	public Archer(String name) throws TooHighCharacteristicsValueException, TooLessSpecialMovesException, InvalidConstraintsException
+	public Archer(String name) throws TooHighCharacteristicsValueException, TooFewSpecialMovesException, InvalidConstraintsException
 	{
 		super(name);
 	}

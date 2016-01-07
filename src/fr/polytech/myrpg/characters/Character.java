@@ -8,9 +8,9 @@ import java.util.Map;
 import fr.polytech.myrpg.characters.exceptions.InvalidConstraintsException;
 import fr.polytech.myrpg.characters.exceptions.TooHeavyCharacterException;
 import fr.polytech.myrpg.characters.exceptions.TooHighCharacteristicsValueException;
-import fr.polytech.myrpg.characters.exceptions.TooLessSpecialMovesException;
-import fr.polytech.myrpg.characters.exceptions.TooMuchArmorsException;
-import fr.polytech.myrpg.characters.exceptions.TooMuchWeaponsException;
+import fr.polytech.myrpg.characters.exceptions.TooFewSpecialMovesException;
+import fr.polytech.myrpg.characters.exceptions.TooManyArmorsException;
+import fr.polytech.myrpg.characters.exceptions.TooManyWeaponsException;
 import fr.polytech.myrpg.characters.items.Item;
 import fr.polytech.myrpg.characters.items.edible.EdibleItem;
 import fr.polytech.myrpg.characters.items.equipable.EquipableItem;
@@ -138,12 +138,12 @@ public abstract class Character
 	 *            The name of the character.
 	 * @throws TooHighCharacteristicsValueException
 	 *             If the characteristics value is higher than expected : {@value #MAXIMAL_CHARACTERISTICS_VALUE}.
-	 * @throws TooLessSpecialMovesException
+	 * @throws TooFewSpecialMovesException
 	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 * @throws InvalidConstraintsException
 	 *             If constraints are invalid.
 	 */
-	public Character(String name) throws TooHighCharacteristicsValueException, TooLessSpecialMovesException, InvalidConstraintsException
+	public Character(String name) throws TooHighCharacteristicsValueException, TooFewSpecialMovesException, InvalidConstraintsException
 	{
 		this.name = name;
 
@@ -242,15 +242,15 @@ public abstract class Character
 	/**
 	 * Check the special moves.
 	 * 
-	 * @throws TooLessSpecialMovesException
+	 * @throws TooFewSpecialMovesException
 	 *             If there is less than {@value #NB_SPECIAL_MOVES_REQUIRED} special moves.
 	 */
-	private void checkSpecialMoves() throws TooLessSpecialMovesException
+	private void checkSpecialMoves() throws TooFewSpecialMovesException
 	{
 		final int specialMovesSize = this.specialMoves.size();
 		if (specialMovesSize < NB_SPECIAL_MOVES_REQUIRED)
 		{
-			throw new TooLessSpecialMovesException(String.format("There is only %d special moves on your character and %d are required", specialMovesSize, NB_SPECIAL_MOVES_REQUIRED));
+			throw new TooFewSpecialMovesException(String.format("There is only %d special moves on your character and %d are required", specialMovesSize, NB_SPECIAL_MOVES_REQUIRED));
 		}
 	}
 
@@ -474,12 +474,12 @@ public abstract class Character
 	 *            The equipable item to equip.
 	 * @throws TooHeavyCharacterException
 	 *             If the character is too heavy.
-	 * @throws TooMuchArmorsException
+	 * @throws TooManyArmorsException
 	 *             If the character can't carry more armor.
-	 * @throws TooMuchWeaponsException
+	 * @throws TooManyWeaponsException
 	 *             If the character can't carry more weapon.
 	 */
-	public void equipWith(EquipableItem equipableItem) throws TooHeavyCharacterException, TooMuchArmorsException, TooMuchWeaponsException
+	public void equipWith(EquipableItem equipableItem) throws TooHeavyCharacterException, TooManyArmorsException, TooManyWeaponsException
 	{
 		if (this.currentWeight + equipableItem.getWeight() > this.maxWeight)
 		{
@@ -492,7 +492,7 @@ public abstract class Character
 		{
 			if (this.currentNbArmor == this.maxNbArmor)
 			{
-				throw new TooMuchArmorsException(String.format("The character can't carry more than %d armors", this.maxNbArmor));
+				throw new TooManyArmorsException(String.format("The character can't carry more than %d armors", this.maxNbArmor));
 			}
 
 			this.currentNbArmor++;
@@ -502,7 +502,7 @@ public abstract class Character
 		{
 			if (this.currentNbWeapon == this.maxNbWeapon)
 			{
-				throw new TooMuchWeaponsException(String.format("The character can't carry more than %d weapons", this.maxNbWeapon));
+				throw new TooManyWeaponsException(String.format("The character can't carry more than %d weapons", this.maxNbWeapon));
 			}
 
 			this.currentNbWeapon++;
