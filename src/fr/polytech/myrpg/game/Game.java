@@ -92,37 +92,36 @@ public class Game implements IGame
 	{
 		while ((!this.firstTeam.allPlayersAreDead()) && (!this.secondTeam.allPlayersAreDead()))
 		{
-			displayChoiceForTheCurrentCharacterAndAct();
+			displayChoiceForTheCurrentPlayerAndAct();
 		}
 
-		Log.i("------------------------------------------------------------------");
-		Log.i("END OF THE GAME");
-		Log.i("------------------------------------------------------------------");
-		Log.i("The team " + (this.firstTeam.allPlayersAreDead() ? this.secondTeam.getName() : this.firstTeam.getName()) + " wins!");
-		Log.i("The team " + (this.firstTeam.allPlayersAreDead() ? this.firstTeam.getName() : this.secondTeam.getName()) + " looses!");
-		Log.i("------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------");
+		System.out.println("END OF THE GAME");
+		System.out.println("------------------------------------------------------------------");
+		System.out.println("The team " + (this.firstTeam.allPlayersAreDead() ? this.secondTeam.getName() : this.firstTeam.getName()) + " wins!");
+		System.out.println("The team " + (this.firstTeam.allPlayersAreDead() ? this.firstTeam.getName() : this.secondTeam.getName()) + " looses!");
+		System.out.println("------------------------------------------------------------------");
 	}
 
 	/**
-	 * Display all possible choices for the current character and act.
+	 * Display all possible choices for the current player and act.
 	 */
-	private void displayChoiceForTheCurrentCharacterAndAct()
+	private void displayChoiceForTheCurrentPlayerAndAct()
 	{
 		final Player currentPlayer = (this.isToFirstTeamToPlay ? this.firstTeam.getCurrentPlayer() : this.secondTeam.getCurrentPlayer());
 
-		Log.i("------------------------------------------------------------------");
-		Log.i("NEW ROUND");
-		Log.i("------------------------------------------------------------------");
-		Log.i("Current player: " + currentPlayer.getName());
+		System.out.println("------------------------------------------------------------------");
+		System.out.println("NEW ROUND");
+		System.out.println("------------------------------------------------------------------");
+		System.out.println("Current player: " + currentPlayer.getName());
 
-		switch (displayAndGetPlayerChoice(Arrays.asList(AVAILABLE_CHOICES)))
+		switch (displayAndGetPlayerChoice(Arrays.asList(AVAILABLE_CHOICES), "What do you want to do?"))
 		{
 			case 1:
 				tryToPickUpAnItem(currentPlayer);
 				displayAndAttackOpponent(currentPlayer);
 				break;
 			case 2:
-			default:
 				if (!currentPlayer.getCharacter().getInventory().isEmpty())
 				{
 					displayAndUseItem(currentPlayer);
@@ -132,6 +131,8 @@ public class Game implements IGame
 					tryToPickUpAnItem(currentPlayer);
 					displayAndAttackOpponent(currentPlayer);
 				}
+				break;
+			default:
 				break;
 		}
 
@@ -157,12 +158,15 @@ public class Game implements IGame
 				{
 					try
 					{
-						currentPlayer.getCharacter().pickUp((EdibleItem) droppedItem);
-						Log.i("------------------------------------------------------------------");
-						Log.i("DROPPED ITEM");
-						Log.i("------------------------------------------------------------------");
-						Log.i("Congratulations, you have dropped an edible item and it was stored in your inventory!");
-						Log.i("------------------------------------------------------------------");
+						final EdibleItem edibleItem = (EdibleItem) droppedItem;
+						currentPlayer.getCharacter().pickUp(edibleItem);
+						System.out.println("------------------------------------------------------------------");
+						System.out.println("DROPPED ITEM");
+						System.out.println("------------------------------------------------------------------");
+						System.out.println("Congratulations, you have found an edible item and it was stored in your inventory!");
+						System.out.println("Name: " + edibleItem.getName());
+						System.out.println("Weight: " + edibleItem.getWeight());
+						System.out.println("------------------------------------------------------------------");
 					}
 					catch (TooHeavyCharacterException e)
 					{
@@ -174,12 +178,15 @@ public class Game implements IGame
 				{
 					try
 					{
-						currentPlayer.getCharacter().equipWith((EquipableItem) droppedItem);
-						Log.i("------------------------------------------------------------------");
-						Log.i("DROPPED ITEM");
-						Log.i("------------------------------------------------------------------");
-						Log.i("Congratulations, you have dropped an equipable item and it was equipped on your character before the fight!");
-						Log.i("------------------------------------------------------------------");
+						final EquipableItem equipableItem = (EquipableItem) droppedItem;
+						currentPlayer.getCharacter().equipWith(equipableItem);
+						System.out.println("------------------------------------------------------------------");
+						System.out.println("DROPPED ITEM");
+						System.out.println("------------------------------------------------------------------");
+						System.out.println("Congratulations, you have found an equipable item and it was equipped on your character before the fight!");
+						System.out.println("Name: " + equipableItem.getName());
+						System.out.println("Weight: " + equipableItem.getWeight());
+						System.out.println("------------------------------------------------------------------");
 					}
 					catch (TooHeavyCharacterException | TooManyArmorsException | TooManyWeaponsException e)
 					{
@@ -197,15 +204,17 @@ public class Game implements IGame
 	 * 
 	 * @param choices
 	 *            All available choices.
+	 * @param title
+	 *            The title.
 	 * 
 	 * @return The corresponding choice.
 	 */
-	private int displayAndGetPlayerChoice(List<String> choices)
+	private int displayAndGetPlayerChoice(List<String> choices, String title)
 	{
 		int playerChoice = -1;
 		while ((playerChoice < 1) || (playerChoice > choices.size()))
 		{
-			displayChoices(choices);
+			displayChoices(choices, title);
 			playerChoice = parsePlayerChoiceInput(SCANNER.nextLine());
 		}
 
@@ -217,15 +226,17 @@ public class Game implements IGame
 	 * 
 	 * @param choices
 	 *            The choices.
+	 * @param title
+	 *            The title.
 	 */
-	private void displayChoices(List<String> choices)
+	private void displayChoices(List<String> choices, String title)
 	{
-		Log.i("What do you want to do?");
+		System.out.println(title);
 
 		int currentIndex = 1;
 		for (String choice : choices)
 		{
-			Log.i((currentIndex++) + "- " + choice);
+			System.out.println((currentIndex++) + "- " + choice);
 		}
 	}
 
@@ -257,7 +268,7 @@ public class Game implements IGame
 	private void displayAndAttackOpponent(Player player)
 	{
 		final Team opponentTeam = (this.isToFirstTeamToPlay ? this.secondTeam : this.firstTeam);
-		final Player opponent = opponentTeam.getPlayer(displayAndGetPlayerChoice(opponentTeam.convertPlayersIntoString()) - 1);
+		final Player opponent = opponentTeam.getPlayer(displayAndGetPlayerChoice(opponentTeam.convertPlayersIntoString(), "Which player(s) do you want to attack?") - 1);
 
 		processAttack(player, opponent, opponentTeam);
 	}
@@ -277,34 +288,34 @@ public class Game implements IGame
 		final Character attackerCharacter = attacker.getCharacter();
 		final Character opponentCharacter = opponent.getCharacter();
 
-		Log.i("------------------------------------------------------------------");
-		Log.i(AsciiArtHelper.SWORDS);
-		Log.i("------------------------------------------------------------------");
-		Log.i("Fight between " + attackerCharacter.getName() + " and " + opponentCharacter.getName());
+		System.out.println("------------------------------------------------------------------");
+		System.out.println(AsciiArtHelper.SWORDS);
+		System.out.println("------------------------------------------------------------------");
+		System.out.println("Fight between " + attackerCharacter.getName() + " and " + opponentCharacter.getName());
 
-		Log.i(attackerCharacter.getName() + " (health : " + attackerCharacter.getHealth() + ")");
-		Log.i(opponentCharacter.getName() + " (health : " + opponentCharacter.getHealth() + ")");
+		System.out.println(attackerCharacter.getName() + " (health : " + attackerCharacter.getHealth() + ")");
+		System.out.println(opponentCharacter.getName() + " (health : " + opponentCharacter.getHealth() + ")");
 
 		attackerCharacter.attack(opponentCharacter);
 
-		Log.i("------------------------------------------------------------------");
-		Log.i(attackerCharacter.getName() + " (health : " + attackerCharacter.getHealth() + ")");
-		Log.i(opponentCharacter.getName() + " (health : " + opponentCharacter.getHealth() + ")");
+		System.out.println("------------------------------------------------------------------");
+		System.out.println(attackerCharacter.getName() + " (health : " + attackerCharacter.getHealth() + ")");
+		System.out.println(opponentCharacter.getName() + " (health : " + opponentCharacter.getHealth() + ")");
 
 		if (opponentCharacter.isDead())
 		{
-			Log.i(AsciiArtHelper.DEATH);
-			Log.i("RIP " + opponentCharacter.getName());
+			System.out.println(AsciiArtHelper.DEATH);
+			System.out.println("RIP " + opponentCharacter.getName());
 			opponentTeam.hasDied(opponent);
 		}
 
 		if (attackerCharacter.canLevelUp())
 		{
-			Log.i("The attacker character can level up");
+			System.out.println("The attacker character can level up");
 			attackerCharacter.upgradeCharacteristic(displayAndGetCharacteristic());
 		}
 
-		Log.i("------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------");
 	}
 
 	/**
@@ -314,7 +325,7 @@ public class Game implements IGame
 	 */
 	private Characteristic displayAndGetCharacteristic()
 	{
-		return Characteristic.valueOf(AVAILABLE_CHARACTERISTICS[displayAndGetPlayerChoice(Arrays.asList(AVAILABLE_CHARACTERISTICS)) - 1]);
+		return Characteristic.valueOf(AVAILABLE_CHARACTERISTICS[displayAndGetPlayerChoice(Arrays.asList(AVAILABLE_CHARACTERISTICS), "Which characteristic(s) do you want to upgrade?") - 1]);
 	}
 
 	/**
@@ -327,7 +338,7 @@ public class Game implements IGame
 	{
 		final Character character = player.getCharacter();
 		final List<EdibleItem> inventory = character.getInventory();
-		final int choosenItemOffset = displayAndGetPlayerChoice(convertInventoryIntoString(inventory));
+		final int choosenItemOffset = displayAndGetPlayerChoice(convertInventoryIntoString(inventory), "Which items to you want to use?");
 		character.consumeItem(inventory.get(choosenItemOffset - 1));
 	}
 
