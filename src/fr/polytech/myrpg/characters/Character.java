@@ -320,14 +320,12 @@ public abstract class Character
 				hasOpponentParry = true;
 				continue;
 			}
-
-			if (currentSpecialMoveUsed.getSpecialMoveType() == SpecialMoveType.RUN_AWAY)
+			else if (currentSpecialMoveUsed.getSpecialMoveType() == SpecialMoveType.RUN_AWAY)
 			{
 				hasOpponentRunAway = true;
 				continue;
 			}
-
-			if (currentSpecialMoveUsed.getSpecialMoveType() == SpecialMoveType.HEAL)
+			else if (currentSpecialMoveUsed.getSpecialMoveType() == SpecialMoveType.HEAL)
 			{
 				opponent.updateCharacteristic(currentSpecialMoveUsed.getEffect().getCharacteristic(), currentSpecialMoveUsed.getEffect().getValue());
 				continue;
@@ -497,8 +495,7 @@ public abstract class Character
 
 			this.currentNbArmor++;
 		}
-
-		if (equipableItemType == EquipableItemType.WEAPON)
+		else if (equipableItemType == EquipableItemType.WEAPON)
 		{
 			if (this.currentNbWeapon == this.maxNbWeapon)
 			{
@@ -526,8 +523,7 @@ public abstract class Character
 		{
 			this.currentNbArmor--;
 		}
-
-		if (equipableItemType == EquipableItemType.WEAPON)
+		else if (equipableItemType == EquipableItemType.WEAPON)
 		{
 			this.currentNbWeapon--;
 		}
